@@ -1,6 +1,13 @@
 {
     "files.associations": {
         "vector.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "cmath": "cpp",
+        "random": "cpp",
+        "stdbool.h": "c",
+        "sphere.h": "c",
+        "shape.h": "c",
+        "ray_tracing.h": "c",
+        "vector": "c"
     }
 }

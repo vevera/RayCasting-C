@@ -1,39 +1,63 @@
 #include <stdio.h>
 #include "vector/vector.h"
+#include "canvas/canvas.h"
+#include "scene/scene.h"
+#include "light/light.h"
 
-int main(){
-
-    vector* vec = vector3d_create(2, 1, 3);
-    vector* vec2 = vector3d_create(4, 3, 5);
-    vector* dest = vector3d_create_empty();
-
-    printf("about to add \n");
-    vector3d_add(dest, vec, vec2);
-    printf("%f %f %f\n", VECTOR_AT(dest, 0), VECTOR_AT(dest, 1), VECTOR_AT(dest, 2));
+int main(int argc, char *argv[]){
+    //Sphere
+    vector* center = vector3d_create(-0, -0, -500);
+    vector* kd = vector3d_create(0.1, 0.1, 0.2);
+    vector* ke = vector3d_create(0.8, 0.8, 0.8);
+    Color* color = color_create(kd, ke, ke, 1);
+    Shape* sphere = shape_create_sphere(center, 300, color);
     
-    printf("about to sub \n");
-    vector3d_sub(dest, vec, vec2);
-    printf("%f %f %f\n", VECTOR_AT(dest, 0), VECTOR_AT(dest, 1), VECTOR_AT(dest, 2));
-    
-    printf("about to scale \n");
-    vector3d_scale(dest, vec, 3);
-    printf("%f %f %f\n", VECTOR_AT(dest, 0), VECTOR_AT(dest, 1), VECTOR_AT(dest, 2));
-    
-    printf("about to mul \n");
-    vector3d_mul(dest, vec, vec2);
-    printf("%f %f %f\n", VECTOR_AT(dest, 0), VECTOR_AT(dest, 1), VECTOR_AT(dest, 2));
-    
-    printf("about to div \n");
-    vector3d_div(dest, vec, vec2);
-    printf("%f %f %f\n", VECTOR_AT(dest, 0), VECTOR_AT(dest, 1), VECTOR_AT(dest, 2));
+    //Sphere
+    vector* center_shre_1 = vector3d_create(100, 0, -100);
+    vector* kd_shre_1 = vector3d_create(0.8, 0.8, 0.8);
+    vector* ke_shre_1 = vector3d_create(1, 1, 1);
+    Color* color_shre_1 = color_create(kd_shre_1, ke_shre_1, ke_shre_1, 1);
+    Shape* shre_1 = shape_create_sphere(center_shre_1, 50, color_shre_1);
    
-    printf("about to norm \n");
-    vector3d_normalize(dest, vec);
-    printf("%f %f %f\n", VECTOR_AT(dest, 0), VECTOR_AT(dest, 1), VECTOR_AT(dest, 2));
-   
-    vector_delete(dest);
-    vector_delete(vec);
-    vector_delete(vec2);
+    //Point Light
+    vector* position = vector3d_create(0, 100, -300);
+    vector* intensity = vector3d_create(1, 1, 1);
+    Light* point_light = light_create_point_light(position, intensity);
+    
+    // Shape Array
+    ShapeArray* shapes = shape_create_shape_array(20);
+    shape_add_shape_to_array(&sphere, shapes);
+    shape_add_shape_to_array(&shre_1, shapes);
+
+
+    // Light Array
+    LightArray* lights = light_create_light_array(10);
+    light_add_light_to_array(&point_light, lights);
+
+
+    vector* camera = vector3d_create(0, 0, 0);
+    vector* bg_color = vector3d_create(0, 0, 0);
+
+    Window * window = canvas_init_window(500, 500);
+
+    Scene scene;
+    scene.window = window;
+    scene.shapes = shapes;
+    scene.lights = lights;
+
+    take_a_picture(&scene, camera, 2, 2, -1, bg_color);
+    canvas_update_window(scene.window);
+    canvas_wait_event();
+    canvas_destroy_window(window);
   
-    return 0;
+    vector_delete(center);
+    vector_delete(kd);
+    vector_delete(ke);
+    color_delete(color);
+    vector_delete(position);
+    vector_delete(intensity);
+    vector_delete(camera);
+    vector_delete(bg_color);
+
+    return EXIT_SUCCESS;
 }
