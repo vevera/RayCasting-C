@@ -8,6 +8,8 @@
         "sphere.h": "c",
         "shape.h": "c",
         "ray_tracing.h": "c",
-        "vector": "c"
+        "vector": "c",
+        "light.h": "c",
+        "libc-header-start.h": "c"
     }
 }

@@ -19,7 +19,9 @@ typedef struct vector {
 vector* vector3d_create_empty();
 vector* vector3d_create(vec_type a, vec_type b, vec_type c);
 void vector3d_set(vector* vec, vec_type* elements, char vec_size);
+void vector3d_reset(vector* vector);
 void vector3d_print(vector* vector);
+vec_type vector_max(vector* vector);
 void vector_delete(vector* source);
 void vector3d_add(vector* dest, vector* source1, vector* source2);
 void vector3d_sub(vector* dest, vector* source1, vector* source2);
@@ -35,6 +37,7 @@ vec_type vector3d_dot(vector* source1, vector* source2);
 //Vector 3d 
 vector* vector3d_create_empty() {
     vector* vec = vector3d_create(0, 0, 0);
+    vec->n = THREE_DIM;
     return vec;
 }
 
@@ -54,9 +57,24 @@ void vector3d_set(vector* vec, vec_type* elements, char vec_size) {
     }
 }
 
+void vector3d_reset(vector* vector){
+    vec_type zeros[] = {0, 0, 0};
+    vector3d_set(vector, zeros, THREE_DIM);
+}
+
 void vector3d_print(vector* vector) {
     printf("(%f, %f, %f)\n", VECTOR_AT(vector, 0), 
             VECTOR_AT(vector, 1),VECTOR_AT(vector, 2));
+}
+
+vec_type vector_max(vector* vector){
+    vec_type max = -INFINITY;
+    for (char i = 0; i < vector->n; i++){
+        if (VECTOR_AT(vector, i) > max) {
+            max = VECTOR_AT(vector, i);
+        }
+    }
+    return max;
 }
 
 void vector_delete(vector* source){
@@ -105,7 +123,7 @@ double vector3d_lenght(vector* source1){
 vec_type vector3d_dot(vector* source1, vector* source2){
     vec_type ret = 0;
     for (char i=0; i<THREE_DIM; ++i) {
-        ret += VECTOR_AT(source1, i) * VECTOR_AT(source2, i);
+        ret += (VECTOR_AT(source1, i) * VECTOR_AT(source2, i));
     }
     return ret;
 }

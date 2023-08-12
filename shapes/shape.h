@@ -22,33 +22,31 @@ typedef enum SHAPE_TYPE {
 typedef struct shape
 {
     SHAPE_TYPE shape_type_;
-    void* shape_;
+    void* concrete_shape_;
     Color* color_;
-    double (*intersect_)(vector* p0, vector*dr, void* shape_);
-    void (*normal_)(vector* dest, vector* pi, void* shape_);
+    double (*intersect_)(vector* p0, vector*dr, struct shape* shape_);
+    void (*normal_)(vector* dest, vector* pi, struct shape* shape_);
 } Shape;
 
 typedef struct shape_array {
     Shape** shapes_;
-    int length_;
-    int max_length_;
+    int size_;
+    int max_size_;
 } ShapeArray;
 
 
 Color* color_create(vector* kd, vector* ke, vector* ka, double shininess);
 void color_delete(Color* color);
-
-ShapeArray * shape_create_shape_array(int max_length);
+ShapeArray* shape_create_shape_array(int max_length);
+//void * shape_free_shape_array(ShapeArray* shapes);
 void shape_add_shape_to_array(Shape** shape, ShapeArray * array);
-double min(double a, double b);
-double max(double a, double b);
 
 Color* color_create(vector* kd, vector* ke, vector* ka, double shininess) {
     Color* color = (Color*)malloc(sizeof(Color));
     color->ka = ka;
     color->ke = ke;
     color->kd = kd;
-
+    color->shininess = shininess;
     return color;
 }
 
@@ -59,31 +57,23 @@ void color_delete(Color* color){
 ShapeArray * shape_create_shape_array(int max_length) {
     ShapeArray* shape_arr = (ShapeArray*)malloc(sizeof(ShapeArray));
     shape_arr->shapes_ = (Shape **)malloc(max_length * sizeof(Shape*));
-    shape_arr->length_ = 0;
-    shape_arr->max_length_ = max_length;
+    shape_arr->size_ = 0;
+    shape_arr->max_size_ = max_length;
 
     return shape_arr;
 }
 
+// void * shape_free_shape_array(ShapeArray* shapes) {
+//     for (int i = 0; i<shapes->size_; i++){
+//         shape_dele
+//     }
+
+// }
+
 void shape_add_shape_to_array(Shape** shape, ShapeArray * array) {
-    if (array->length_ < array->max_length_) {
-        array->shapes_[array->length_++] = *shape;
+    if (array->size_ < array->max_size_) {
+        array->shapes_[array->size_++] = *shape;
     }
-}
-
-
-double min(double a, double b) {
-    if (a < b) {
-        return a;
-    }
-    return b;
-}
-
-double max(double a, double b) {
-    if (a > b) {
-        return a;
-    }
-    return b;
 }
 
 #endif

@@ -3,6 +3,7 @@
 
 #include "shape.h"
 #include "../vector/vector.h"
+#include "../utils.h"
 
 typedef struct sphere
 {
@@ -11,17 +12,12 @@ typedef struct sphere
 } Sphere;
 
 
-double sphere_intersect(vector* p0, vector* dr, void* shape_);
-void sphere_normal(vector* dest, vector* pi, void* shape_);
+double sphere_intersect(vector* p0, vector* dr, struct shape* shape_);
+void sphere_normal(vector* dest, vector* pi, struct shape* shape_);
 Shape* shape_create_sphere(vector* center, double radius, Color* color);
 
-double sphere_intersect(vector* p0, vector* dr, void* shape_) {
-    //printf("about to call sphere intersect\n");
-    Sphere * sphere = (Sphere *)shape_;
-
-    // printf("Center: ");
-    // vector3d_print(&sphere->center_);
-    // printf("Radius: %f", sphere->radius_);
+double sphere_intersect(vector* p0, vector* dr, struct shape* shape_) {
+    Sphere * sphere = (Sphere *)(shape_->concrete_shape_);
     
     double t1, t2, a, b, c, delta;
 
@@ -46,8 +42,8 @@ double sphere_intersect(vector* p0, vector* dr, void* shape_) {
     return min(t1, t2);
 }
 
-void sphere_normal(vector* dest, vector* pi, void* shape_){
-    Sphere * sphere = (Sphere *)shape_;
+void sphere_normal(vector* dest, vector* pi, struct shape* shape_){
+    Sphere * sphere = (Sphere *)shape_->concrete_shape_;
     vector3d_sub(dest, pi, sphere->center_);
     vector3d_scale(dest, dest, 1/sphere->radius_);
 }
@@ -61,7 +57,7 @@ Shape* shape_create_sphere(vector* center, double radius, Color* color){
     sphere->radius_ = radius;
 
     shape->shape_type_ = SHAPE_SPHERE;
-    shape->shape_ = sphere;
+    shape->concrete_shape_ = sphere;
     shape->color_ = color;
     shape->intersect_ = sphere_intersect;
     shape->normal_ = sphere_normal;
@@ -70,7 +66,7 @@ Shape* shape_create_sphere(vector* center, double radius, Color* color){
 }
 
 void shape_delete_sphere(Shape* shape) {
-    free(shape->shape_);
+    free(shape->concrete_shape_);
     free(shape);
 }
 
