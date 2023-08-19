@@ -28,11 +28,11 @@ void ambient_light_contribution(vector* output, Color* color_,
                                         vector* l, vector* n, 
                                         vector* v, vector* r, struct light *light) {
     vector* ka = color_->ka;
-    vector3d_mul(output, light->intensity_, ka);                                       
+    vector_mul(output, light->intensity_, ka);                                       
 }
 
 void ambient_light_l_from_point_p(vector* output, vector* p, struct light* light) {  
-    vector3d_reset(output);
+    vector_reset(output);
 }
 
 double ambient_light_distance_from_point_p(vector* p, struct light *light) {

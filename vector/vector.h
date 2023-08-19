@@ -25,31 +25,31 @@ typedef struct matrix {
 #define MATRIX_AT(matrix, r, c) (matrix)->data_[(r * (matrix)->m + c)]
 
 //Vector 3d 
-vector* vector3d_create_empty();
-vector* vector3d_create(vec_type a, vec_type b, vec_type c);
-void vector3d_set(vector* vec, vec_type* elements);
-void vector3d_reset(vector* vector);
-void vector3d_print(vector* vector);
+vector* vector_create_empty();
+vector* vector_create(vec_type a, vec_type b, vec_type c);
+void vector_set(vector* vec, vec_type* elements);
+void vector_reset(vector* vector);
+void vector_print(vector* vector);
 void vector_delete(vector* source);
-void vector3d_add(vector* dest, vector* source1, vector* source2);
-void vector3d_sub(vector* dest, vector* source1, vector* source2);
-void vector3d_mul(vector* dest, vector* source1, vector* source2);
-void vector3d_scale(vector* dest, vector* source1, double source2);
-void vector3d_div(vector* dest, vector* source1, vector* source2);
-void vector3d_normalize(vector* dest, vector* source);
-void vector3d_crossproduct(vector* dest, vector* source1, vector* source2);
-double vector3d_lenght(vector* source1);
-vec_type vector3d_dot(vector* source1, vector* source2);
+void vector_add(vector* dest, vector* source1, vector* source2);
+void vector_sub(vector* dest, vector* source1, vector* source2);
+void vector_mul(vector* dest, vector* source1, vector* source2);
+void vector_scale(vector* dest, vector* source1, double source2);
+void vector_div(vector* dest, vector* source1, vector* source2);
+void vector_normalize(vector* dest, vector* source);
+void vector3_crossproduct(vector* dest, vector* source1, vector* source2);
+double vector_lenght(vector* source1);
+vec_type vector_dot(vector* source1, vector* source2);
 vec_type vector_max(vector* vector);
 
 //Vector 3d 
-vector* vector3d_create_empty() {
-    vector* vec = vector3d_create(0, 0, 0);
+vector* vector_create_empty() {
+    vector* vec = vector_create(0, 0, 0);
     vec->n = THREE_DIM;
     return vec;
 }
 
-vector* vector3d_create(vec_type a, vec_type b, vec_type c) {
+vector* vector_create(vec_type a, vec_type b, vec_type c) {
     vector* vec = (vector*)malloc(sizeof(vector));
     vec->data_ = (vec_type*)malloc(THREE_DIM * sizeof(vec_type));
     vec->n = THREE_DIM;
@@ -59,18 +59,18 @@ vector* vector3d_create(vec_type a, vec_type b, vec_type c) {
     return vec;
 }
 
-void vector3d_set(vector* vec, vec_type* elements) {
+void vector_set(vector* vec, vec_type* elements) {
     for (char i = 0; i < vec->n; i++){
         VECTOR_AT(vec, i) = elements[i];
     }
 }
 
-void vector3d_reset(vector* vector){
+void vector_reset(vector* vector){
     vec_type zeros[] = {0, 0, 0};
-    vector3d_set(vector, zeros);
+    vector_set(vector, zeros);
 }
 
-void vector3d_print(vector* vector) {
+void vector_print(vector* vector) {
     printf("(%f, %f, %f)\n", VECTOR_AT(vector, 0), 
             VECTOR_AT(vector, 1),VECTOR_AT(vector, 2));
 }
@@ -80,36 +80,36 @@ void vector_delete(vector* source){
     free(source);
 }
 
-void vector3d_add(vector* dest, vector* source1, vector* source2){
-    for (char i=0; i<THREE_DIM; ++i) {
+void vector_add(vector* dest, vector* source1, vector* source2){
+    for (char i=0; i<dest->n; ++i) {
         VECTOR_AT(dest, i) = VECTOR_AT(source1, i) + VECTOR_AT(source2, i);
     }
 }
-void vector3d_sub(vector* dest, vector* source1, vector* source2){
-    for (char i=0; i<THREE_DIM; ++i) {
+void vector_sub(vector* dest, vector* source1, vector* source2){
+    for (char i=0; i<dest->n; ++i) {
         VECTOR_AT(dest, i) = VECTOR_AT(source1, i) - VECTOR_AT(source2, i);
     }
 }
-void vector3d_mul(vector* dest, vector* source1, vector* source2){
-    for (char i=0; i<THREE_DIM; ++i) {
+void vector_mul(vector* dest, vector* source1, vector* source2){
+    for (char i=0; i<dest->n; ++i) {
         VECTOR_AT(dest, i) = VECTOR_AT(source1, i) * VECTOR_AT(source2, i);
     }
 }
-void vector3d_scale(vector* dest, vector* source1, double source2){
-    for (char i=0; i<THREE_DIM; ++i) {
+void vector_scale(vector* dest, vector* source1, double source2){
+    for (char i=0; i<dest->n; ++i) {
         VECTOR_AT(dest, i) = VECTOR_AT(source1, i) * source2;
     }
 }
-void vector3d_div(vector* dest, vector* source1, vector* source2){
-    for (char i=0; i<THREE_DIM; ++i) {
+void vector_div(vector* dest, vector* source1, vector* source2){
+    for (char i=0; i<dest->n; ++i) {
         VECTOR_AT(dest, i) = VECTOR_AT(source1, i) / VECTOR_AT(source2, i);
     }
 }
-void vector3d_normalize(vector* dest, vector* source){
-    vector3d_scale(dest, source, 1/vector3d_lenght(source));
+void vector_normalize(vector* dest, vector* source){
+    vector_scale(dest, source, 1/vector_lenght(source));
 }
 
-void vector3d_crossproduct(vector* dest, vector* source1, vector* source2){
+void vector3_crossproduct(vector* dest, vector* source1, vector* source2){
     VECTOR_AT(dest, 0) = VECTOR_AT(source1, 1) * VECTOR_AT(source2, 2) - 
                             VECTOR_AT(source1, 2) * VECTOR_AT(source2, 1);
 
@@ -120,12 +120,12 @@ void vector3d_crossproduct(vector* dest, vector* source1, vector* source2){
                             VECTOR_AT(source1, 1) * VECTOR_AT(source2, 0);                                                
 }
 
-double vector3d_lenght(vector* source1){
-    vec_type dot_prod = vector3d_dot(source1, source1);
+double vector_lenght(vector* source1){
+    vec_type dot_prod = vector_dot(source1, source1);
     return sqrt(dot_prod);
 }
 
-vec_type vector3d_dot(vector* source1, vector* source2){
+vec_type vector_dot(vector* source1, vector* source2){
     vec_type ret = 0;
     for (char i=0; i<THREE_DIM; ++i) {
         ret += (VECTOR_AT(source1, i) * VECTOR_AT(source2, i));
@@ -169,7 +169,7 @@ matrix* matrix_create(char n, char m, ...){
 
     va_list args;
     va_start(args, m);
-
+    
     matrix* mat = matrix_create_empty(n, m);
 
     for (char i = 0; i < n_args; i++) {

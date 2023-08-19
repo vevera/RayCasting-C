@@ -31,14 +31,14 @@ void point_light_contribution(vector* output, Color* color_,
 }
 
 void point_light_l_from_point_p(vector* output, vector* p, struct light* light) {
-    vector3d_sub(output, light->position_, p);
-    vector3d_normalize(output, output);
+    vector_sub(output, light->position_, p);
+    vector_normalize(output, output);
 }
 
 double point_light_distance_from_point_p(vector* p, struct light *light) {
-    vector* dr = vector3d_create_empty();
-    vector3d_sub(dr, light->position_, p);
-    double lenght = vector3d_lenght(dr);
+    vector* dr = vector_create_empty();
+    vector_sub(dr, light->position_, p);
+    double lenght = vector_lenght(dr);
     vector_delete(dr);
     return lenght;
 }

@@ -48,23 +48,23 @@ void calc_light_diffuse_specular_contribution(  vector* output, Color* color_,
    
     double shininess = color_->shininess;
 
-    vector* id = vector3d_create_empty();
-    vector* ie = vector3d_create_empty();
+    vector* id = vector_create_empty();
+    vector* ie = vector_create_empty();
 
     double max_v;
 
-    vector3d_mul(id, intensity_, kd);
-    vector3d_scale(id, id, max(vector3d_dot(l, n), 0.0));
+    vector_mul(id, intensity_, kd);
+    vector_scale(id, id, max(vector_dot(l, n), 0.0));
 
-    vector3d_mul(ie, intensity_, ke);
-    vector3d_scale(ie, ie, max(pow(vector3d_dot(v, r), shininess), 0.0));
+    vector_mul(ie, intensity_, ke);
+    vector_scale(ie, ie, max(pow(vector_dot(v, r), shininess), 0.0));
     
-    vector3d_add(output, id, ie);
+    vector_add(output, id, ie);
  
     max_v = vector_max(output);
    
     if (max_v > 1.0)  {
-        vector3d_scale(output, output, 1/max_v);
+        vector_scale(output, output, 1/max_v);
     }
 
     vector_delete(id);

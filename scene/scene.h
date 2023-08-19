@@ -23,9 +23,9 @@ void take_a_picture(Scene* scene, vector* camera, double viewp_w,
 
     double  yj, xj;
 
-    vector* dr = vector3d_create_empty(); 
+    vector* dr = vector_create_empty(); 
     vector* p0 = camera;  
-    vector* raytrace_color = vector3d_create_empty();
+    vector* raytrace_color = vector_create_empty();
 
     for (int l = 0; l < scene->window->height; l++) {
         yj = ((viewp_h - dy)/ 2.0) - (l * dy);
@@ -33,9 +33,9 @@ void take_a_picture(Scene* scene, vector* camera, double viewp_w,
             xj = (-viewp_w / 2.0) + (dx / 2.0) + (c * dx);
 
             vec_type elements[] = {xj, yj, viewp_z};
-            vector3d_set(dr, elements);
+            vector_set(dr, elements);
 
-            vector3d_sub(dr, dr, camera);
+            vector_sub(dr, dr, camera);
 
             if(ray_tracing(raytrace_color, p0, dr, 
                                         viewp_z, 

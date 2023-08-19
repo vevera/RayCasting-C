@@ -24,12 +24,12 @@ int main(int argc, char *argv[]){
 
     // matrix_print(matd);
 
-    // vector* vec_1 = vector3d_create(2, 3, 4);
-    // vector* dest = vector3d_create_empty();
+    // vector* vec_1 = vector_create(2, 3, 4);
+    // vector* dest = vector_create_empty();
 
     // matrix_vec_mul(dest, mat, vec_1);
 
-    // vector3d_print(dest);
+    // vector_print(dest);
 
 
     // matrix_delete(mat);
@@ -37,19 +37,19 @@ int main(int argc, char *argv[]){
     // matrix_delete(matd);
 
     //Sphere
-    vector* center = vector3d_create(-0, -0, -500);
-    vector* kd = vector3d_create(0.7, 0.1, 0.1);
-    vector* ke = vector3d_create(0.6, 0.1, 0.1);//0.0, 0.0, 0.0
+    vector* center = vector_create(-0, -0, -500);
+    vector* kd = vector_create(0.7, 0.1, 0.1);
+    vector* ke = vector_create(0.6, 0.1, 0.1);//0.0, 0.0, 0.0
     Color* color = color_create(kd, ke, kd, 7);
     Shape* sphere = shape_create_sphere(center, 300, color);
    
     //Point Light
-    vector* position = vector3d_create(500, 200, 100);
-    vector* intensity = vector3d_create(0.7, 0.7, 0.7);
+    vector* position = vector_create(500, 200, 100);
+    vector* intensity = vector_create(0.7, 0.7, 0.7);
     Light* point_light = light_create_point_light(position, intensity);
 
     //Ambient Light
-    vector* ambient_intensity = vector3d_create(0.2, 0.2, 0.2);
+    vector* ambient_intensity = vector_create(0.2, 0.2, 0.2);
     Light* ambient_light =  light_create_ambient_light(ambient_intensity);
 
     // Shape Array
@@ -66,8 +66,8 @@ int main(int argc, char *argv[]){
     vec_type lz = -400;
 
 
-    vector* camera = vector3d_create(0, 0, 0);
-    vector* bg_color = vector3d_create(0, 0, 0);
+    vector* camera = vector_create(0, 0, 0);
+    vector* bg_color = vector_create(0, 0, 0);
 
     Window * window = canvas_init_window(500, 500);
 

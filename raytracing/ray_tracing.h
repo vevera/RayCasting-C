@@ -22,7 +22,7 @@ bool ray_tracing(vector* output_color, vector* p0, vector* dr, double d_min, dou
                     ShapeArray* shapes, LightArray* lights){
 
     vec_type zeros[] = {0 , 0, 0};                    
-    vector3d_set(output_color, zeros);                 
+    vector_set(output_color, zeros);                 
 
     Shape* closest_shape_ = NULL;                    
     double closest_t = INFINITY;
@@ -41,20 +41,20 @@ bool ray_tracing(vector* output_color, vector* p0, vector* dr, double d_min, dou
         return 0;
     }
 
-    vector* pi = vector3d_create_empty();
-    vector* normal = vector3d_create_empty();
-    vector* v = vector3d_create_empty();
+    vector* pi = vector_create_empty();
+    vector* normal = vector_create_empty();
+    vector* v = vector_create_empty();
 
-    vector3d_scale(pi, dr, closest_t);
-    vector3d_add(pi, pi, p0);
+    vector_scale(pi, dr, closest_t);
+    vector_add(pi, pi, p0);
 
     closest_shape_->normal_(normal, pi, closest_shape_);
 
     // printf("normal: ");
-    // vector3d_print(normal);
+    // vector_print(normal);
 
-    vector3d_scale(v, dr, -1);
-    vector3d_normalize(v, v);
+    vector_scale(v, dr, -1);
+    vector_normalize(v, v);
 
     calculate_light_intensity(output_color, lights, normal, v, pi, shapes, closest_shape_);
   
@@ -71,19 +71,19 @@ void calculate_light_intensity( vector* output, LightArray* lights,
 
     Color* color = collided_shape->color_;
 
-    vector* l = vector3d_create_empty();
-    vector* r = vector3d_create_empty();
-    vector* contribution = vector3d_create_empty();
+    vector* l = vector_create_empty();
+    vector* r = vector_create_empty();
+    vector* contribution = vector_create_empty();
 
     for (int i = 0; i<lights->size_; i++){
         Light* light = lights->lights[i];
         light->calc_light_l_from_point_p(l, pi, light);
-        vector3d_scale(r, n, vector3d_dot(l, n) * 2);
-        vector3d_sub(r, r, l);
+        vector_scale(r, n, vector_dot(l, n) * 2);
+        vector_sub(r, r, l);
 
         if (!is_light_blocked_by_object(shapes, pi, light, l)) {
             light->calc_light_contribution(contribution, color, l, n, v, r, light);
-            vector3d_add(output, output, contribution);
+            vector_add(output, output, contribution);
         }
 
     }
@@ -91,7 +91,7 @@ void calculate_light_intensity( vector* output, LightArray* lights,
     double max_v = vector_max(output);
    
     if (max_v > 1) {
-        vector3d_scale(output, output, 1/max_v);
+        vector_scale(output, output, 1/max_v);
     }
 
     vector_delete(l);
