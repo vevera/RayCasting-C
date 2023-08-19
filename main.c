@@ -6,6 +6,36 @@
 #include "light/ambient_light.h"
 
 int main(int argc, char *argv[]){
+    //maxof(6, 1, 2, 3, 4);
+
+    // matrix* mat = matrix_create(3, 3, 
+    //                             1.0, 2.2, 3.3, 
+    //                             3.0, 2.0, 4.1, 
+    //                             3.0, 2.0, 2.0);
+
+    // matrix* mat2 = matrix_create(3, 3, 
+    //                             1.0, 2.2, 3.3, 
+    //                             3.0, 2.0, 4.1, 
+    //                             3.0, 2.0, 2.0);
+    
+    // matrix* matd = matrix_create_empty(3, 3);
+
+    // matrix_mul(matd, mat, mat2);
+
+    // matrix_print(matd);
+
+    // vector* vec_1 = vector3d_create(2, 3, 4);
+    // vector* dest = vector3d_create_empty();
+
+    // matrix_vec_mul(dest, mat, vec_1);
+
+    // vector3d_print(dest);
+
+
+    // matrix_delete(mat);
+    // matrix_delete(mat2);
+    // matrix_delete(matd);
+
     //Sphere
     vector* center = vector3d_create(-0, -0, -500);
     vector* kd = vector3d_create(0.7, 0.1, 0.1);
