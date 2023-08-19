@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <stdarg.h>
+#include <stdio.h>
 
 typedef struct vector {
     char n;
@@ -26,7 +27,7 @@ typedef struct matrix {
 //Vector 3d 
 vector* vector3d_create_empty();
 vector* vector3d_create(vec_type a, vec_type b, vec_type c);
-void vector3d_set(vector* vec, vec_type* elements, char vec_size);
+void vector3d_set(vector* vec, vec_type* elements);
 void vector3d_reset(vector* vector);
 void vector3d_print(vector* vector);
 void vector_delete(vector* source);
@@ -58,15 +59,15 @@ vector* vector3d_create(vec_type a, vec_type b, vec_type c) {
     return vec;
 }
 
-void vector3d_set(vector* vec, vec_type* elements, char vec_size) {
-    for (char i = 0; i < vec_size; i++){
+void vector3d_set(vector* vec, vec_type* elements) {
+    for (char i = 0; i < vec->n; i++){
         VECTOR_AT(vec, i) = elements[i];
     }
 }
 
 void vector3d_reset(vector* vector){
     vec_type zeros[] = {0, 0, 0};
-    vector3d_set(vector, zeros, THREE_DIM);
+    vector3d_set(vector, zeros);
 }
 
 void vector3d_print(vector* vector) {
@@ -109,7 +110,14 @@ void vector3d_normalize(vector* dest, vector* source){
 }
 
 void vector3d_crossproduct(vector* dest, vector* source1, vector* source2){
+    VECTOR_AT(dest, 0) = VECTOR_AT(source1, 1) * VECTOR_AT(source2, 2) - 
+                            VECTOR_AT(source1, 2) * VECTOR_AT(source2, 1);
 
+    VECTOR_AT(dest, 1) = VECTOR_AT(source1, 2) * VECTOR_AT(source2, 0) - 
+                            VECTOR_AT(source1, 0) * VECTOR_AT(source2, 2);
+                            
+    VECTOR_AT(dest, 2) = VECTOR_AT(source1, 0) * VECTOR_AT(source2, 1) - 
+                            VECTOR_AT(source1, 1) * VECTOR_AT(source2, 0);                                                
 }
 
 double vector3d_lenght(vector* source1){
@@ -140,6 +148,7 @@ matrix* matrix_create_empty(char n, char m);
 matrix* matrix_create(char n, char m, ...);
 void matrix_delete(matrix* matrix);
 void matrix_print(matrix* matrix);
+void matrix_set(matrix* matrix, ...);
 
 void matrix_mul(matrix* dest, matrix* src_1, matrix* src_2);
 void matrix_vec_mul(vector* dest, matrix* src_m, vector* src_v);
@@ -183,6 +192,20 @@ void matrix_print(matrix* matrix) {
         }
         printf("\n");
     }
+}
+
+void matrix_set(matrix* matrix, ...){
+
+    char n_args = matrix->n * matrix->m;
+
+    va_list args;
+    va_start(args, matrix);
+
+    for (char i = 0; i < n_args; i++) {
+        matrix->data_[i] = va_arg(args, vec_type);
+    }
+
+    va_end(args);
 }
 
 void matrix_mul(matrix* dest, matrix* src_1, matrix* src_2) {

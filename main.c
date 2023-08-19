@@ -61,6 +61,11 @@ int main(int argc, char *argv[]){
     light_add_light_to_array(&point_light, lights);
     light_add_light_to_array(&ambient_light, lights);
 
+    vec_type lx = 300;
+    vec_type ly = 800;
+    vec_type lz = -400;
+
+
     vector* camera = vector3d_create(0, 0, 0);
     vector* bg_color = vector3d_create(0, 0, 0);
 

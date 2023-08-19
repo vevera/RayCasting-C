@@ -33,7 +33,7 @@ void take_a_picture(Scene* scene, vector* camera, double viewp_w,
             xj = (-viewp_w / 2.0) + (dx / 2.0) + (c * dx);
 
             vec_type elements[] = {xj, yj, viewp_z};
-            vector3d_set(dr, elements, THREE_DIM);
+            vector3d_set(dr, elements);
 
             vector3d_sub(dr, dr, camera);
 

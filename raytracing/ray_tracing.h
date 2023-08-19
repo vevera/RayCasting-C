@@ -22,7 +22,7 @@ bool ray_tracing(vector* output_color, vector* p0, vector* dr, double d_min, dou
                     ShapeArray* shapes, LightArray* lights){
 
     vec_type zeros[] = {0 , 0, 0};                    
-    vector3d_set(output_color, zeros, THREE_DIM);                 
+    vector3d_set(output_color, zeros);                 
 
     Shape* closest_shape_ = NULL;                    
     double closest_t = INFINITY;
