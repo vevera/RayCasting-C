@@ -21,7 +21,7 @@ double sphere_intersect(vector* p0, vector* dr, struct shape* shape_) {
     
     double t1, t2, a, b, c, delta;
 
-    vector* w = vector_create_empty();
+    vector* w = vector_create_empty(THREE_DIM);
     vector_sub(w, p0, sphere->center_);
 
     a = vector_dot(dr, dr);

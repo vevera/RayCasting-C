@@ -48,8 +48,8 @@ void calc_light_diffuse_specular_contribution(  vector* output, Color* color_,
    
     double shininess = color_->shininess;
 
-    vector* id = vector_create_empty();
-    vector* ie = vector_create_empty();
+    vector* id = vector_create_empty(THREE_DIM);
+    vector* ie = vector_create_empty(THREE_DIM);
 
     double max_v;
 

@@ -36,7 +36,7 @@ void point_light_l_from_point_p(vector* output, vector* p, struct light* light) 
 }
 
 double point_light_distance_from_point_p(vector* p, struct light *light) {
-    vector* dr = vector_create_empty();
+    vector* dr = vector_create_empty(THREE_DIM);
     vector_sub(dr, light->position_, p);
     double lenght = vector_lenght(dr);
     vector_delete(dr);

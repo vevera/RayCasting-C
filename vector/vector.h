@@ -25,8 +25,8 @@ typedef struct matrix {
 #define MATRIX_AT(matrix, r, c) (matrix)->data_[(r * (matrix)->m + c)]
 
 //Vector 3d 
-vector* vector_create_empty();
-vector* vector_create(vec_type a, vec_type b, vec_type c);
+vector* vector_create_empty(char n);
+vector* vector_create(char n, ...);
 void vector_set(vector* vec, vec_type* elements);
 void vector_reset(vector* vector);
 void vector_print(vector* vector);
@@ -43,19 +43,31 @@ vec_type vector_dot(vector* source1, vector* source2);
 vec_type vector_max(vector* vector);
 
 //Vector 3d 
-vector* vector_create_empty() {
-    vector* vec = vector_create(0, 0, 0);
-    vec->n = THREE_DIM;
+vector* vector_create_empty(char n) {
+    vector* vec = (vector*)malloc(sizeof(vector));
+    vec->data_ = (vec_type*)malloc(n * sizeof(vec_type));
+    vec->n = n;
+
+    for (char i = 0; i < n; i++) {
+        VECTOR_AT(vec, i) = 0.0;
+    }
+
     return vec;
 }
 
-vector* vector_create(vec_type a, vec_type b, vec_type c) {
-    vector* vec = (vector*)malloc(sizeof(vector));
-    vec->data_ = (vec_type*)malloc(THREE_DIM * sizeof(vec_type));
-    vec->n = THREE_DIM;
-    vec->data_[0] = a;
-    vec->data_[1] = b;
-    vec->data_[2] = c;
+vector* vector_create(char n, ...) {
+
+    va_list args;
+    va_start(args, n);
+    
+    vector* vec = vector_create_empty(n);
+
+    for (char i = 0; i < n; i++) {
+        VECTOR_AT(vec, i) = va_arg(args, vec_type);
+    }
+
+    va_end(args);
+
     return vec;
 }
 
@@ -127,7 +139,7 @@ double vector_lenght(vector* source1){
 
 vec_type vector_dot(vector* source1, vector* source2){
     vec_type ret = 0;
-    for (char i=0; i<THREE_DIM; ++i) {
+    for (char i=0; i<source1->n; ++i) {
         ret += (VECTOR_AT(source1, i) * VECTOR_AT(source2, i));
     }
     return ret;

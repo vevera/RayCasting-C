@@ -4,52 +4,23 @@
 #include "scene/scene.h"
 #include "light/light.h"
 #include "light/ambient_light.h"
+#include "camera/camera.h"
 
 int main(int argc, char *argv[]){
-    //maxof(6, 1, 2, 3, 4);
-
-    // matrix* mat = matrix_create(3, 3, 
-    //                             1.0, 2.2, 3.3, 
-    //                             3.0, 2.0, 4.1, 
-    //                             3.0, 2.0, 2.0);
-
-    // matrix* mat2 = matrix_create(3, 3, 
-    //                             1.0, 2.2, 3.3, 
-    //                             3.0, 2.0, 4.1, 
-    //                             3.0, 2.0, 2.0);
-    
-    // matrix* matd = matrix_create_empty(3, 3);
-
-    // matrix_mul(matd, mat, mat2);
-
-    // matrix_print(matd);
-
-    // vector* vec_1 = vector_create(2, 3, 4);
-    // vector* dest = vector_create_empty();
-
-    // matrix_vec_mul(dest, mat, vec_1);
-
-    // vector_print(dest);
-
-
-    // matrix_delete(mat);
-    // matrix_delete(mat2);
-    // matrix_delete(matd);
-
     //Sphere
-    vector* center = vector_create(-0, -0, -500);
-    vector* kd = vector_create(0.7, 0.1, 0.1);
-    vector* ke = vector_create(0.6, 0.1, 0.1);//0.0, 0.0, 0.0
+    vector* center = vector_create(THREE_DIM, -0.0, -0.0, -500.0);
+    vector* kd = vector_create(THREE_DIM, 0.7, 0.1, 0.1);
+    vector* ke = vector_create(THREE_DIM, 0.6, 0.1, 0.1);//0.0, 0.0, 0.0
     Color* color = color_create(kd, ke, kd, 7);
     Shape* sphere = shape_create_sphere(center, 300, color);
    
     //Point Light
-    vector* position = vector_create(500, 200, 100);
-    vector* intensity = vector_create(0.7, 0.7, 0.7);
+    vector* position = vector_create(THREE_DIM, 500.0, 200.0, 100.0);
+    vector* intensity = vector_create(THREE_DIM, 0.7, 0.7, 0.7);
     Light* point_light = light_create_point_light(position, intensity);
 
     //Ambient Light
-    vector* ambient_intensity = vector_create(0.2, 0.2, 0.2);
+    vector* ambient_intensity = vector_create(THREE_DIM, 0.2, 0.2, 0.2);
     Light* ambient_light =  light_create_ambient_light(ambient_intensity);
 
     // Shape Array
@@ -61,13 +32,29 @@ int main(int argc, char *argv[]){
     light_add_light_to_array(&point_light, lights);
     light_add_light_to_array(&ambient_light, lights);
 
-    vec_type lx = 300;
-    vec_type ly = 800;
-    vec_type lz = -400;
+    vec_type lx = 300.0;
+    vec_type ly = 800.0;
+    vec_type lz = -400.0;
 
+    vector* eye = vector_create(FOUR_DIM, lx, ly, lz, 1.0);
+    vector* at = vector_create(FOUR_DIM, -0.0, -0.0, -500.0, 1.0);
+    vector* up =  vector_create(FOUR_DIM, lx, ly + 100.0, lz, 1.0);
 
-    vector* camera = vector_create(0, 0, 0);
-    vector* bg_color = vector_create(0, 0, 0);
+    matrix* wc = matrix_create_empty(FOUR_DIM, FOUR_DIM);
+    camera_calculate_wc_mat(wc, eye, at, up);
+
+    vector* eye_t = vector_create_empty(FOUR_DIM);
+    matrix_vec_mul(eye_t, wc, eye);
+
+    printf("wc: \n");
+    matrix_print(wc);
+
+    printf("eye_t: \n");
+    vector_print(eye_t);
+    printf("%f", eye_t->data_[3]);
+
+    vector* camera = vector_create(THREE_DIM, 0.0, 0.0, 0.0);
+    vector* bg_color = vector_create(THREE_DIM, 0.0, 0.0, 0.0);
 
     Window * window = canvas_init_window(500, 500);
 

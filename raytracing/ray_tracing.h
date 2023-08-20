@@ -41,9 +41,9 @@ bool ray_tracing(vector* output_color, vector* p0, vector* dr, double d_min, dou
         return 0;
     }
 
-    vector* pi = vector_create_empty();
-    vector* normal = vector_create_empty();
-    vector* v = vector_create_empty();
+    vector* pi = vector_create_empty(THREE_DIM);
+    vector* normal = vector_create_empty(THREE_DIM);
+    vector* v = vector_create_empty(THREE_DIM);
 
     vector_scale(pi, dr, closest_t);
     vector_add(pi, pi, p0);
@@ -71,9 +71,9 @@ void calculate_light_intensity( vector* output, LightArray* lights,
 
     Color* color = collided_shape->color_;
 
-    vector* l = vector_create_empty();
-    vector* r = vector_create_empty();
-    vector* contribution = vector_create_empty();
+    vector* l = vector_create_empty(THREE_DIM);
+    vector* r = vector_create_empty(THREE_DIM);
+    vector* contribution = vector_create_empty(THREE_DIM);
 
     for (int i = 0; i<lights->size_; i++){
         Light* light = lights->lights[i];

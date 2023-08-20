@@ -23,9 +23,9 @@ void take_a_picture(Scene* scene, vector* camera, double viewp_w,
 
     double  yj, xj;
 
-    vector* dr = vector_create_empty(); 
+    vector* dr = vector_create_empty(THREE_DIM); 
     vector* p0 = camera;  
-    vector* raytrace_color = vector_create_empty();
+    vector* raytrace_color = vector_create_empty(THREE_DIM);
 
     for (int l = 0; l < scene->window->height; l++) {
         yj = ((viewp_h - dy)/ 2.0) - (l * dy);

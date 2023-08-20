@@ -8,10 +8,10 @@ void camera_calculate_wc_mat(matrix* wc_dest, vector* eye, vector* at, vector* u
 
 void camera_calculate_wc_mat(matrix* wc_dest, vector* eye, vector* at, vector* up)  {
 
-    vector* vup = vector_create_empty();
-    vector* kc = vector_create_empty();
-    vector* ic = vector_create_empty();
-    vector* jc = vector_create_empty();
+    vector* vup = vector_create_empty(THREE_DIM);
+    vector* kc = vector_create_empty(THREE_DIM);
+    vector* ic = vector_create_empty(THREE_DIM);
+    vector* jc = vector_create_empty(THREE_DIM);
 
     // eye -> up vector
     vector_sub(vup, up, eye);
@@ -26,6 +26,9 @@ void camera_calculate_wc_mat(matrix* wc_dest, vector* eye, vector* at, vector* u
     // (camera coordinates y)
     vector3_crossproduct(jc, kc, ic);
 
+    vector_normalize(ic, ic);
+    vector_normalize(jc, jc);
+
     vec_type z1, z2, z3;
     z1 = -vector_dot(ic, eye);
     z2 = -vector_dot(jc, eye);
@@ -34,7 +37,7 @@ void camera_calculate_wc_mat(matrix* wc_dest, vector* eye, vector* at, vector* u
     matrix_set(wc_dest, 
                 VECTOR_AT(ic, 0), VECTOR_AT(ic, 1), VECTOR_AT(ic, 2),  z1,    
                 VECTOR_AT(jc, 0), VECTOR_AT(jc, 1), VECTOR_AT(jc, 2),  z2,  
-                VECTOR_AT(kc, 0), VECTOR_AT(kc, 1), VECTOR_AT(kc, 2),  z1,
+                VECTOR_AT(kc, 0), VECTOR_AT(kc, 1), VECTOR_AT(kc, 2),  z3,
                 0.0, 0.0, 0.0, 1.0);  
 
     vector_delete(vup);
