@@ -10,6 +10,7 @@ void ambient_light_contribution(vector* output, Color* color_,
                                         vector* v, vector* r, struct light *light);
 void ambient_light_l_from_point_p(vector* output, vector* p, struct light* light);
 double ambient_light_distance_from_point_p(vector* p, struct light *light);
+void ambient_light_cordinates_tranformation(matrix* transformation_matrix, struct light* light) {};
 
 //Implementation
 
@@ -20,6 +21,7 @@ Light* light_create_ambient_light(vector*intensity) {
     light->calc_light_contribution = ambient_light_contribution;
     light->calc_light_l_from_point_p = ambient_light_l_from_point_p;
     light->calc_light_distance_from_point_p = ambient_light_distance_from_point_p;
+    light->light_cordinates_transformation = ambient_light_cordinates_tranformation;
     light->concrete_light_ = NULL;
     return light;
 }

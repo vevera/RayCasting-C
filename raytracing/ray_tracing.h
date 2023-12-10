@@ -10,6 +10,8 @@
 
 #include <stdio.h>
 
+void transform_objects_cordinates(ShapeArray* shapes, LightArray* lights, matrix* transformation_matrix);
+
 bool ray_tracing(vector* output_color, vector* p0, vector* dr, double d_min, double d_max, 
                     ShapeArray* shapes, LightArray* lights);
 
@@ -17,6 +19,22 @@ void calculate_light_intensity( vector* output, LightArray* lights,
                                 vector* n, vector* v, vector* pi, 
                                 ShapeArray* shapes, Shape* collided_shape);
 bool is_light_blocked_by_object(ShapeArray* shapes, vector* pi, Light* light, vector* l);
+
+
+void transform_objects_cordinates(ShapeArray* shapes, LightArray* lights, matrix* transformation_matrix) {
+
+    for (int i = 0; i < shapes->size_; ++i) {
+        Shape* curr_shape = shapes->shapes_[i];
+        curr_shape->cordinates_transformation_(transformation_matrix, curr_shape);
+    }
+
+
+    for (int i = 0; i<lights->size_; i++){
+       Light* light = lights->lights[i];
+       light->light_cordinates_transformation(transformation_matrix, light);
+    }
+}
+
 
 bool ray_tracing(vector* output_color, vector* p0, vector* dr, double d_min, double d_max, 
                     ShapeArray* shapes, LightArray* lights){

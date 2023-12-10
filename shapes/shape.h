@@ -26,6 +26,7 @@ typedef struct shape
     Color* color_;
     double (*intersect_)(vector* p0, vector*dr, struct shape* shape_);
     void (*normal_)(vector* dest, vector* pi, struct shape* shape_);
+    void (*cordinates_transformation_)(matrix* transformation_matrix, struct shape* shape_);
 } Shape;
 
 typedef struct shape_array {

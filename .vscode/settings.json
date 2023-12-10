@@ -10,6 +10,10 @@
         "ray_tracing.h": "c",
         "vector": "c",
         "light.h": "c",
-        "libc-header-start.h": "c"
-    }
+        "libc-header-start.h": "c",
+        "camera.h": "c",
+        "ambient_light.h": "c",
+        "state.h": "c"
+    },
+    "cmake.sourceDirectory": "/wsl.localhost/Ubuntu/home/vevera/repos/RayCasting-C"
 }

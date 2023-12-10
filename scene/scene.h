@@ -27,6 +27,8 @@ void take_a_picture(Scene* scene, vector* camera, double viewp_w,
     vector* p0 = camera;  
     vector* raytrace_color = vector_create_empty(THREE_DIM);
 
+    scene->window->last_modified_idx = 0;
+
     for (int l = 0; l < scene->window->height; l++) {
         yj = ((viewp_h - dy)/ 2.0) - (l * dy);
         for (int c = 0; c < scene->window->width; c++) { 

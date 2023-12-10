@@ -14,7 +14,9 @@ typedef struct sphere
 
 double sphere_intersect(vector* p0, vector* dr, struct shape* shape_);
 void sphere_normal(vector* dest, vector* pi, struct shape* shape_);
+void sphere_cordinates_transformation(matrix* transformation_matrix, struct shape* shape_);
 Shape* shape_create_sphere(vector* center, double radius, Color* color);
+void shape_delete_sphere(Shape* shape);
 
 double sphere_intersect(vector* p0, vector* dr, struct shape* shape_) {
     Sphere * sphere = (Sphere *)(shape_->concrete_shape_);
@@ -48,6 +50,29 @@ void sphere_normal(vector* dest, vector* pi, struct shape* shape_){
     vector_scale(dest, dest, 1/sphere->radius_);
 }
 
+void sphere_cordinates_transformation(matrix* transformation_matrix, struct shape* shape_) {
+    Sphere * sphere = (Sphere *)shape_->concrete_shape_;
+
+    vector* aux_center = vector_create(FOUR_DIM, 
+                                        VECTOR_AT(sphere->center_, 0), 
+                                        VECTOR_AT(sphere->center_, 1), 
+                                        VECTOR_AT(sphere->center_, 2), 1);
+    vector* new_center = vector_create_empty(FOUR_DIM);
+
+    matrix_vec_mul(new_center, transformation_matrix, aux_center);
+
+    free(aux_center);
+    if (sphere->center_ != NULL) {
+        free(sphere->center_);
+    }
+
+    sphere->center_ = vector_create(FOUR_DIM, 
+                                        VECTOR_AT(new_center, 0), 
+                                        VECTOR_AT(new_center, 1), 
+                                        VECTOR_AT(new_center, 2), 1);
+    free(new_center);
+}
+
 Shape* shape_create_sphere(vector* center, double radius, Color* color){
 
     Sphere * sphere = (Sphere *)malloc(sizeof(Sphere));
@@ -61,6 +86,7 @@ Shape* shape_create_sphere(vector* center, double radius, Color* color){
     shape->color_ = color;
     shape->intersect_ = sphere_intersect;
     shape->normal_ = sphere_normal;
+    shape->cordinates_transformation_ = sphere_cordinates_transformation;
 
     return shape;
 }

@@ -13,6 +13,7 @@ typedef struct light {
                                                 vector* v, vector* r, struct light *light);
     void (*calc_light_l_from_point_p)(vector* output, vector* p, struct light* light);
     double (*calc_light_distance_from_point_p)(vector* p, struct light *light);
+    void (*light_cordinates_transformation)(matrix* transformation_matrix, struct light *light);
     void* concrete_light_;
 } Light;
 

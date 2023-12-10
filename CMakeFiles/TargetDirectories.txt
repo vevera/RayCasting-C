@@ -1,0 +1,3 @@
+/home/vevera/repos/RayCasting-C/CMakeFiles/raycasting_c.dir
+/home/vevera/repos/RayCasting-C/CMakeFiles/edit_cache.dir
+/home/vevera/repos/RayCasting-C/CMakeFiles/rebuild_cache.dir
