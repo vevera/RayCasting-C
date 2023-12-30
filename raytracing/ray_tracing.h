@@ -10,7 +10,7 @@
 
 #include <stdio.h>
 
-void transform_objects_cordinates(ShapeArray* shapes, LightArray* lights, matrix* transformation_matrix);
+void transform_objects_cordinates(Scene* scene, matrix* transformation_matrix);
 
 bool ray_tracing(vector* output_color, vector* p0, vector* dr, double d_min, double d_max, 
                     ShapeArray* shapes, LightArray* lights);
@@ -21,16 +21,20 @@ void calculate_light_intensity( vector* output, LightArray* lights,
 bool is_light_blocked_by_object(ShapeArray* shapes, vector* pi, Light* light, vector* l);
 
 
-void transform_objects_cordinates(ShapeArray* shapes, LightArray* lights, matrix* transformation_matrix) {
+void transform_objects_cordinates(Scene* scene, matrix* transformation_matrix) {
+    shape_array_copy(scene->shapes, scene->original_shapes);
+    light_array_copy(scene->lights, scene->original_lights);
 
-    for (int i = 0; i < shapes->size_; ++i) {
-        Shape* curr_shape = shapes->shapes_[i];
+    //vector_print(((Sphere *)(scene->shapes->shapes_[0].concrete_shape_))->center_);
+
+    for (int i = 0; i < scene->shapes->size_; ++i) {
+        Shape* curr_shape = scene->shapes->shapes_ + i;
         curr_shape->cordinates_transformation_(transformation_matrix, curr_shape);
     }
 
 
-    for (int i = 0; i<lights->size_; i++){
-       Light* light = lights->lights[i];
+    for (int i = 0; i<scene->lights->size_; i++){
+       Light* light = scene->lights->lights + i;
        light->light_cordinates_transformation(transformation_matrix, light);
     }
 }
@@ -38,7 +42,7 @@ void transform_objects_cordinates(ShapeArray* shapes, LightArray* lights, matrix
 
 bool ray_tracing(vector* output_color, vector* p0, vector* dr, double d_min, double d_max, 
                     ShapeArray* shapes, LightArray* lights){
-
+    
     vec_type zeros[] = {0 , 0, 0};                    
     vector_set(output_color, zeros);                 
 
@@ -47,7 +51,7 @@ bool ray_tracing(vector* output_color, vector* p0, vector* dr, double d_min, dou
     double t = 0;
 
     for (int i = 0; i < shapes->size_; ++i) {
-        Shape* curr_shape = shapes->shapes_[i];
+        Shape* curr_shape = shapes->shapes_ + i;
         t = curr_shape->intersect_(p0, dr, curr_shape);
         if ((t > 0) && ((t >= d_min) && (t <= d_max)) && (t < closest_t)) {
             closest_t = t;
@@ -94,7 +98,7 @@ void calculate_light_intensity( vector* output, LightArray* lights,
     vector* contribution = vector_create_empty(THREE_DIM);
 
     for (int i = 0; i<lights->size_; i++){
-        Light* light = lights->lights[i];
+        Light* light = lights->lights + i;
         light->calc_light_l_from_point_p(l, pi, light);
         vector_scale(r, n, vector_dot(l, n) * 2);
         vector_sub(r, r, l);
@@ -121,7 +125,7 @@ bool is_light_blocked_by_object(ShapeArray* shapes, vector* pi, Light* light, ve
     double t, distance_from_pi;
 
     for (int i = 0; i < shapes->size_; i++) {
-        t = shapes->shapes_[i]->intersect_(pi, l, shapes->shapes_[i]);
+        t = shapes->shapes_[i].intersect_(pi, l, shapes->shapes_ + i);
         distance_from_pi = light->calc_light_distance_from_point_p(pi, light);
 
         if (t > 0.0001 && t < distance_from_pi)

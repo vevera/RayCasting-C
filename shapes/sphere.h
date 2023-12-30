@@ -12,15 +12,14 @@ typedef struct sphere
 } Sphere;
 
 
-double sphere_intersect(vector* p0, vector* dr, struct shape* shape_);
-void sphere_normal(vector* dest, vector* pi, struct shape* shape_);
-void sphere_cordinates_transformation(matrix* transformation_matrix, struct shape* shape_);
-Shape* shape_create_sphere(vector* center, double radius, Color* color);
-void shape_delete_sphere(Shape* shape);
+double sphere_intersect(vector* p0, vector* dr, Sphere * sphere);
+void sphere_normal(vector* dest, vector* pi, Sphere * sphere);
+void sphere_cordinates_transformation(matrix* transformation_matrix, Sphere * sphere);
+Sphere* sphere_copy(Sphere* dest, Sphere* src);
+Sphere sphere_create(vector* center, double radius, Color* color);
+void sphere_delete(Sphere* sphere);
 
-double sphere_intersect(vector* p0, vector* dr, struct shape* shape_) {
-    Sphere * sphere = (Sphere *)(shape_->concrete_shape_);
-    
+double sphere_intersect(vector* p0, vector* dr, Sphere * sphere) {
     double t1, t2, a, b, c, delta;
 
     vector* w = vector_create_empty(THREE_DIM);
@@ -44,15 +43,12 @@ double sphere_intersect(vector* p0, vector* dr, struct shape* shape_) {
     return min(t1, t2);
 }
 
-void sphere_normal(vector* dest, vector* pi, struct shape* shape_){
-    Sphere * sphere = (Sphere *)shape_->concrete_shape_;
+void sphere_normal(vector* dest, vector* pi, Sphere * sphere){
     vector_sub(dest, pi, sphere->center_);
     vector_scale(dest, dest, 1/sphere->radius_);
 }
 
-void sphere_cordinates_transformation(matrix* transformation_matrix, struct shape* shape_) {
-    Sphere * sphere = (Sphere *)shape_->concrete_shape_;
-
+void sphere_cordinates_transformation(matrix* transformation_matrix, Sphere * sphere) {
     vector* aux_center = vector_create(FOUR_DIM, 
                                         VECTOR_AT(sphere->center_, 0), 
                                         VECTOR_AT(sphere->center_, 1), 
@@ -73,27 +69,29 @@ void sphere_cordinates_transformation(matrix* transformation_matrix, struct shap
     free(new_center);
 }
 
-Shape* shape_create_sphere(vector* center, double radius, Color* color){
-
-    Sphere * sphere = (Sphere *)malloc(sizeof(Sphere));
-    Shape * shape = (Shape *)malloc(sizeof(Shape));
-
-    sphere->center_ = center;
-    sphere->radius_ = radius;
-
-    shape->shape_type_ = SHAPE_SPHERE;
-    shape->concrete_shape_ = sphere;
-    shape->color_ = color;
-    shape->intersect_ = sphere_intersect;
-    shape->normal_ = sphere_normal;
-    shape->cordinates_transformation_ = sphere_cordinates_transformation;
-
-    return shape;
+Sphere* sphere_copy(Sphere* dest, Sphere* src) {
+    memcpy(dest, src, sizeof(Sphere));
+    dest->center_ = vector_create_empty(src->center_->n);
+    vector_copy(dest->center_, src->center_);
+    return dest;
 }
 
-void shape_delete_sphere(Shape* shape) {
-    free(shape->concrete_shape_);
-    free(shape);
+Sphere sphere_create(vector* center, double radius, Color* color){
+
+    Sphere sphere = {
+        .center_ = center,
+        .radius_ = radius
+    };
+
+    return sphere;
 }
+
+void sphere_delete(Sphere* sphere) {
+    vector_delete(sphere->center_);
+    free(sphere);
+}
+
+
+
 
 #endif

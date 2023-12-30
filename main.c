@@ -14,7 +14,7 @@
     vector* ke_##sphere_name = vector_create(THREE_DIM, (ke_r), (ke_g), (ke_b)); \
     vector* ka_##sphere_name = vector_create(THREE_DIM, (ka_r), (ka_g), (ka_b)); \
     Color* color_##sphere_name = color_create(kd_##sphere_name, ke_##sphere_name, ka_##sphere_name, (shininess)); \
-    Shape* sphere_name = shape_create_sphere(center_##sphere_name, (radius), color_##sphere_name)
+    Shape sphere_name = shape_create_sphere(center_##sphere_name, (radius), color_##sphere_name)
 
 #define DELETE_SPHERE(sphere_name) \
     do { \
@@ -23,7 +23,7 @@
         vector_delete(ke_##sphere_name); \
         vector_delete(ka_##sphere_name); \
         color_delete(color_##sphere_name); \
-        shape_delete_sphere(sphere_name); \
+        shape_delete_sphere(&sphere_name); \
     } while (0)
    
 int main(int argc, char *argv[]){
@@ -68,11 +68,11 @@ int main(int argc, char *argv[]){
     //Point Light
     vector* position = vector_create(THREE_DIM, 900.0, 1200.0, 100.0);
     vector* intensity = vector_create(THREE_DIM, 0.7, 0.7, 0.7);
-    Light* point_light = light_create_point_light(position, intensity);
+    Light point_light = light_create_point_light(position, intensity);
 
     //Ambient Light
     vector* ambient_intensity = vector_create(THREE_DIM, 0.2, 0.2, 0.2);
-    Light* ambient_light =  light_create_ambient_light(ambient_intensity);
+    Light ambient_light =  light_create_ambient_light(ambient_intensity);
 
     // Shape Array
     ShapeArray* shapes = shape_create_shape_array(20);
@@ -103,7 +103,6 @@ int main(int argc, char *argv[]){
     matrix* cw = matrix_create_empty(FOUR_DIM, FOUR_DIM);
     camera_calculate_wc_mat(wc, cw, &camera);
 
-    transform_objects_cordinates(shapes, lights, wc);
     //transform_objects_cordinates(shapes, lights, cw);
 
     vector* eye_t = vector_create_empty(FOUR_DIM);
@@ -125,9 +124,12 @@ int main(int argc, char *argv[]){
 
     Scene scene;
     scene.window = window;
-    scene.shapes = shapes;
-    scene.lights = lights;
+    scene.original_shapes = shapes;
+    scene.original_lights = lights;
+    scene.shapes = shape_create_shape_array(shapes->max_size_);
+    scene.lights = light_create_light_array(lights->max_size_);
 
+    transform_objects_cordinates(&scene, wc);
 
     State state = { 
 

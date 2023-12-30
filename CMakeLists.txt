@@ -9,21 +9,21 @@ find_package(SDL2 REQUIRED)
 
 set(HEADER_FILES 
 
-    camera/camera.h
-    canvas/canvas.h
-    light/light.h
-    light/ambient_light.h
-    light/point_light.h
-    raytracing/ray_tracing.h
-    scene/scene.h
-    shapes/shape.h
-    shapes/sphere.h
-    vector/vector.h
-    utils.h
+    # camera/camera.h
+    # canvas/canvas.h
+    # light/light.h
+    # light/ambient_light.h
+    # light/point_light.h
+    # raytracing/ray_tracing.h
+    # scene/scene.h
+    # shapes/shape.h
+    # shapes/sphere.h
+    # vector/vector.h
+    # utils.h
 )
 
 include_directories(${SDL2_INCLUDE_DIRS})
 
 
-add_executable(raycasting_c ${HEADER_FILES} main.c)
+add_executable(raycasting_c ${HEADER_FILES} main2.c)
 target_link_libraries(raycasting_c ${SDL2_LIBRARIES} m)

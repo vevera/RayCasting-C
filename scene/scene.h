@@ -3,20 +3,25 @@
 
 #include "../canvas/canvas.h"
 #include "../shapes/shape.h"
-#include "../raytracing/ray_tracing.h"
 #include "../light/light.h"
 
 typedef struct scene {
+    ShapeArray* original_shapes;
     ShapeArray* shapes;
+    LightArray* original_lights;
     LightArray* lights;
     Window* window;
 } Scene;
+
+#include "../raytracing/ray_tracing.h"
 
 void take_a_picture(Scene* scene, vector* camera, double viewp_w, 
                     double viewp_h, double viewp_z, vector* bgColor);
 
 void take_a_picture(Scene* scene, vector* camera, double viewp_w, 
                     double viewp_h, double viewp_z, vector* bgColor){
+    
+    printf("before take a picture\n");
 
     double dx = viewp_w/(double)scene->window->width;
     double dy = viewp_h/(double)scene->window->height; 

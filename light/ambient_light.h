@@ -3,7 +3,7 @@
 
 #include "light.h"
 
-Light* light_create_ambient_light(vector* intensity);
+Light light_create_ambient_light(vector* intensity);
 
 void ambient_light_contribution(vector* output, Color* color_,
                                         vector* l, vector* n, 
@@ -14,15 +14,17 @@ void ambient_light_cordinates_tranformation(matrix* transformation_matrix, struc
 
 //Implementation
 
-Light* light_create_ambient_light(vector*intensity) {
-    Light* light = (Light*)malloc(sizeof(Light));
-    light->position_ = NULL;
-    light->intensity_ = intensity;
-    light->calc_light_contribution = ambient_light_contribution;
-    light->calc_light_l_from_point_p = ambient_light_l_from_point_p;
-    light->calc_light_distance_from_point_p = ambient_light_distance_from_point_p;
-    light->light_cordinates_transformation = ambient_light_cordinates_tranformation;
-    light->concrete_light_ = NULL;
+Light light_create_ambient_light(vector*intensity) {
+    Light light = {
+        .position_ = NULL,
+        .intensity_ = intensity,
+        .calc_light_contribution = ambient_light_contribution,
+        .calc_light_l_from_point_p = ambient_light_l_from_point_p,
+        .calc_light_distance_from_point_p = ambient_light_distance_from_point_p,
+        .light_cordinates_transformation = ambient_light_cordinates_tranformation,
+        .concrete_light_ = NULL
+    };
+
     return light;
 }
 

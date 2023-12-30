@@ -90,41 +90,31 @@ void canvas_wait_event(State* state) {
             }
 
             if (SDL_KEYDOWN == windowEvent.type) {
-                const double t = 0.5;
-                printf("%d key code\n", windowEvent.key.keysym.sym);
+                const double t = 10;
+                //printf("%d key code\n", windowEvent.key.keysym.sym);
                 bool updated = false;
-                vector* td;
-                vector* d;
+                vector3d td = vector3d_create_empty();
                 switch (windowEvent.key.keysym.sym)
                 {
                 case SDLK_DOWN:
-                    td = vector_create_empty(FOUR_DIM);
-                    vector_scale(td, state->camera->kc, t);
-                    vector_add(state->camera->eye, td, state->camera->eye);
-                    vector_delete(td);
+                    vector3d_scale(&td, &state->camera->jc, t);
                     updated = true;
                     break;
                 case SDLK_UP:
-                    td = vector_create_empty(FOUR_DIM);
-                    vector_scale(td, state->camera->kc, -t);
-                    vector_add(state->camera->eye, td, state->camera->eye);
-                    vector_delete(td);
+                    vector3d_scale(&td, &state->camera->jc, -t);
+                    //vector_add(state->camera->eye, td, state->camera->eye);
                     updated = true;
                     break;
                 case SDLK_LEFT:
-                    td = vector_create_empty(FOUR_DIM);
-                    vector_scale(td, state->camera->ic, -t);
-                    vector_add(state->camera->eye, td, state->camera->eye);
-                    vector_add(state->camera->up, td, state->camera->up);
-                    vector_delete(td);
+                    vector3d_scale(&td, &state->camera->ic, -t);
+                    // vector_add(state->camera->eye, td, state->camera->eye);
+                    // vector_add(state->camera->up, td, state->camera->up);
                     updated = true;
                     break;
                 case SDLK_RIGHT:
-                    td = vector_create_empty(FOUR_DIM);
-                    vector_scale(td, state->camera->ic, t);
-                    vector_add(state->camera->eye, td, state->camera->eye);
-                    vector_add(state->camera->up, td, state->camera->up);
-                    vector_delete(td);
+                    vector3d_scale(&td, &state->camera->ic, t);
+                    // vector_add(state->camera->eye, td, state->camera->eye);
+                    // vector_add(state->camera->up, td, state->camera->up);
                     updated = true;
                     break;
                 default:
@@ -132,9 +122,24 @@ void canvas_wait_event(State* state) {
                 }
 
                 if (updated) {
-                    transform_objects_cordinates(state->scene->shapes, state->scene->lights, state->cw);
+                    //transform_objects_cordinates(state->scene, state->cw);
+
+                    vector_add(state->camera->eye, td, state->camera->eye);
+                    vector_add(state->camera->at, td, state->camera->at);
+                    vector_add(state->camera->up, td, state->camera->up);
+                    vector_delete(td);
+
                     camera_calculate_wc_mat(state->wc, state->cw, state->camera);
-                    transform_objects_cordinates(state->scene->shapes, state->scene->lights, state->wc);
+
+                    transform_objects_cordinates(state->scene, state->wc);
+                    printf("sphere center after: \n");
+                    vector_print(((Sphere *)(state->scene->shapes->shapes_[0].concrete_shape_))->center_);
+
+                    // printf("camera positions: \n");
+                    // vector_print(state->camera->eye);
+                    // vector_print(state->camera->at);
+                    // vector_print(state->camera->up);
+
                   
 
                     take_a_picture(state->scene, state->eye, state->vp_w, state->vp_h, state->vp_z, state->background_color);
@@ -145,7 +150,7 @@ void canvas_wait_event(State* state) {
     }
 }
 
-void canvas_add_pixel(Window* window, vector* color) {
+void canvas_add_pixel(Window* window, vector3d* color) {
     window->data_[window->last_modified_idx++] = VECTOR_AT(color, 0) * 255;
     window->data_[window->last_modified_idx++] = VECTOR_AT(color, 1) * 255;
     window->data_[window->last_modified_idx++] = VECTOR_AT(color, 2) * 255;

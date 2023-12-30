@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/vevera/repos/RayCasting-C/main.c" "CMakeFiles/raycasting_c.dir/main.c.o" "gcc" "CMakeFiles/raycasting_c.dir/main.c.o.d"
+  "/home/vevera/repos/RayCasting-C/main2.c" "CMakeFiles/raycasting_c.dir/main2.c.o" "gcc" "CMakeFiles/raycasting_c.dir/main2.c.o.d"
   )
 
 # Targets to which this target links.

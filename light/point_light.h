@@ -3,7 +3,7 @@
 
 #include "light.h"
 
-Light* light_create_point_light(vector* position, vector*intensity);
+Light light_create_point_light(vector* position, vector* intensity);
 
 void point_light_contribution(vector* output, Color* color_,
                                         vector* l, vector* n, 
@@ -14,15 +14,17 @@ void point_light_cordinates_transformation(matrix* transformation_matrix, struct
 
 
 //Implementation
-Light* light_create_point_light(vector* position, vector*intensity) {
-    Light* light = (Light*)malloc(sizeof(Light));
-    light->position_ = position;
-    light->intensity_ = intensity;
-    light->calc_light_contribution = point_light_contribution;
-    light->calc_light_l_from_point_p = point_light_l_from_point_p;
-    light->calc_light_distance_from_point_p = point_light_distance_from_point_p;
-    light->light_cordinates_transformation = point_light_cordinates_transformation;
-    light->concrete_light_ = NULL;
+Light light_create_point_light(vector* position, vector* intensity) {
+    Light light = {
+        .position_ = position,
+        .intensity_ = intensity,
+        .calc_light_contribution = point_light_contribution,
+        .calc_light_l_from_point_p = point_light_l_from_point_p,
+        .calc_light_distance_from_point_p = point_light_distance_from_point_p,
+        .light_cordinates_transformation = point_light_cordinates_transformation,
+        .concrete_light_ = NULL
+    };
+    
     return light;
 }
 
@@ -54,16 +56,17 @@ void point_light_cordinates_transformation(matrix* transformation_matrix, struct
 
     matrix_vec_mul(new_position, transformation_matrix, aux_position);
 
-    free(aux_position);
+    vector_delete(aux_position);
+
     if (light->position_ != NULL) {
-        free(light->position_);
+        vector_delete(light->position_);
     }
 
     light->position_ = vector_create(FOUR_DIM, 
                                         VECTOR_AT(new_position, 0), 
                                         VECTOR_AT(new_position, 1), 
                                         VECTOR_AT(new_position, 2), 1);
-    free(new_position);
+    vector_delete(new_position);
 }
 
 #endif

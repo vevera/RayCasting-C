@@ -19,18 +19,8 @@ typedef enum SHAPE_TYPE {
     SHAPE_MESH,
 } SHAPE_TYPE;
 
-typedef struct shape
-{
-    SHAPE_TYPE shape_type_;
-    void* concrete_shape_;
-    Color* color_;
-    double (*intersect_)(vector* p0, vector*dr, struct shape* shape_);
-    void (*normal_)(vector* dest, vector* pi, struct shape* shape_);
-    void (*cordinates_transformation_)(matrix* transformation_matrix, struct shape* shape_);
-} Shape;
-
 typedef struct shape_array {
-    Shape** shapes_;
+    Sphere* spheres_;
     int size_;
     int max_size_;
 } ShapeArray;
@@ -39,8 +29,9 @@ typedef struct shape_array {
 Color* color_create(vector* kd, vector* ke, vector* ka, double shininess);
 void color_delete(Color* color);
 ShapeArray* shape_create_shape_array(int max_length);
+void shape_array_copy(ShapeArray* dest, ShapeArray* src);
 //void * shape_free_shape_array(ShapeArray* shapes);
-void shape_add_shape_to_array(Shape** shape, ShapeArray * array);
+void shape_add_shape_to_array(Sphere* sphere, ShapeArray * array);
 
 Color* color_create(vector* kd, vector* ke, vector* ka, double shininess) {
     Color* color = (Color*)malloc(sizeof(Color));
@@ -57,11 +48,22 @@ void color_delete(Color* color){
 
 ShapeArray * shape_create_shape_array(int max_length) {
     ShapeArray* shape_arr = (ShapeArray*)malloc(sizeof(ShapeArray));
-    shape_arr->shapes_ = (Shape **)malloc(max_length * sizeof(Shape*));
+    shape_arr->spheres_ = (Sphere *)malloc(max_length * sizeof(Sphere));
     shape_arr->size_ = 0;
     shape_arr->max_size_ = max_length;
 
     return shape_arr;
+}
+
+void shape_array_copy(ShapeArray* dest, ShapeArray* src) {
+    assert(dest->max_size_ == src->max_size_);
+    memcpy(dest->spheres_, src->spheres_, src->max_size_ * sizeof(Sphere));
+    // for (size_t idx = 0; idx < src->max_size_ ; idx++) {
+    //     Shape* dest_shape = dest->shapes_[idx];
+    //     memcpy(dest_shape, src->shapes_[idx], sizeof(Shape));
+    //     dest_shape->concrete_shape_ = dest_shape->copy_shape(dest_shape);
+    // }
+    dest->size_ = src->size_;
 }
 
 // void * shape_free_shape_array(ShapeArray* shapes) {
@@ -71,9 +73,9 @@ ShapeArray * shape_create_shape_array(int max_length) {
 
 // }
 
-void shape_add_shape_to_array(Shape** shape, ShapeArray * array) {
+void shape_add_shape_to_array(Sphere* sphere, ShapeArray * array) {
     if (array->size_ < array->max_size_) {
-        array->shapes_[array->size_++] = *shape;
+        array->spheres_[array->size_++] = *sphere;
     }
 }
 

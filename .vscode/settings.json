@@ -13,7 +13,12 @@
         "libc-header-start.h": "c",
         "camera.h": "c",
         "ambient_light.h": "c",
-        "state.h": "c"
+        "state.h": "c",
+        "scene.h": "c",
+        "stdarg.h": "c",
+        "utils.h": "c",
+        "math.h": "c",
+        "assert.h": "c"
     },
     "cmake.sourceDirectory": "/wsl.localhost/Ubuntu/home/vevera/repos/RayCasting-C"
 }

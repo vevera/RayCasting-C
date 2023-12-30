@@ -69,28 +69,28 @@ include CMakeFiles/raycasting_c.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/raycasting_c.dir/flags.make
 
-CMakeFiles/raycasting_c.dir/main.c.o: CMakeFiles/raycasting_c.dir/flags.make
-CMakeFiles/raycasting_c.dir/main.c.o: main.c
-CMakeFiles/raycasting_c.dir/main.c.o: CMakeFiles/raycasting_c.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/vevera/repos/RayCasting-C/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/raycasting_c.dir/main.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/raycasting_c.dir/main.c.o -MF CMakeFiles/raycasting_c.dir/main.c.o.d -o CMakeFiles/raycasting_c.dir/main.c.o -c /home/vevera/repos/RayCasting-C/main.c
+CMakeFiles/raycasting_c.dir/main2.c.o: CMakeFiles/raycasting_c.dir/flags.make
+CMakeFiles/raycasting_c.dir/main2.c.o: main2.c
+CMakeFiles/raycasting_c.dir/main2.c.o: CMakeFiles/raycasting_c.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/vevera/repos/RayCasting-C/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/raycasting_c.dir/main2.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/raycasting_c.dir/main2.c.o -MF CMakeFiles/raycasting_c.dir/main2.c.o.d -o CMakeFiles/raycasting_c.dir/main2.c.o -c /home/vevera/repos/RayCasting-C/main2.c
 
-CMakeFiles/raycasting_c.dir/main.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/raycasting_c.dir/main.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/vevera/repos/RayCasting-C/main.c > CMakeFiles/raycasting_c.dir/main.c.i
+CMakeFiles/raycasting_c.dir/main2.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/raycasting_c.dir/main2.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/vevera/repos/RayCasting-C/main2.c > CMakeFiles/raycasting_c.dir/main2.c.i
 
-CMakeFiles/raycasting_c.dir/main.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/raycasting_c.dir/main.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/vevera/repos/RayCasting-C/main.c -o CMakeFiles/raycasting_c.dir/main.c.s
+CMakeFiles/raycasting_c.dir/main2.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/raycasting_c.dir/main2.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/vevera/repos/RayCasting-C/main2.c -o CMakeFiles/raycasting_c.dir/main2.c.s
 
 # Object files for target raycasting_c
 raycasting_c_OBJECTS = \
-"CMakeFiles/raycasting_c.dir/main.c.o"
+"CMakeFiles/raycasting_c.dir/main2.c.o"
 
 # External object files for target raycasting_c
 raycasting_c_EXTERNAL_OBJECTS =
 
-raycasting_c: CMakeFiles/raycasting_c.dir/main.c.o
+raycasting_c: CMakeFiles/raycasting_c.dir/main2.c.o
 raycasting_c: CMakeFiles/raycasting_c.dir/build.make
 raycasting_c: CMakeFiles/raycasting_c.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/vevera/repos/RayCasting-C/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking C executable raycasting_c"

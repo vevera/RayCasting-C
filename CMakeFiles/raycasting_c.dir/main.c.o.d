@@ -55,7 +55,7 @@ CMakeFiles/raycasting_c.dir/main.c.o: \
  /usr/include/x86_64-linux-gnu/bits/fp-logb.h \
  /usr/include/x86_64-linux-gnu/bits/fp-fast.h \
  /usr/include/x86_64-linux-gnu/bits/mathcalls-helper-functions.h \
- /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
+ /usr/include/x86_64-linux-gnu/bits/mathcalls.h /usr/include/assert.h \
  /home/vevera/repos/RayCasting-C/canvas/canvas.h /usr/include/SDL2/SDL.h \
  /usr/include/SDL2/SDL_main.h /usr/include/SDL2/SDL_stdinc.h \
  /usr/include/SDL2/SDL_config.h \
@@ -192,6 +192,7 @@ CMakeFiles/raycasting_c.dir/main.c.o: \
  /home/vevera/repos/RayCasting-C/canvas/../scene/scene.h \
  /home/vevera/repos/RayCasting-C/canvas/../scene/../canvas/canvas.h \
  /home/vevera/repos/RayCasting-C/canvas/../scene/../shapes/shape.h \
+ /home/vevera/repos/RayCasting-C/canvas/../scene/../light/light.h \
  /home/vevera/repos/RayCasting-C/canvas/../scene/../raytracing/ray_tracing.h \
  /home/vevera/repos/RayCasting-C/canvas/../scene/../raytracing/../vector/vector.h \
  /home/vevera/repos/RayCasting-C/canvas/../scene/../raytracing/../shapes/shape.h \
@@ -203,7 +204,6 @@ CMakeFiles/raycasting_c.dir/main.c.o: \
  /home/vevera/repos/RayCasting-C/canvas/../scene/../raytracing/../light/point_light.h \
  /home/vevera/repos/RayCasting-C/canvas/../scene/../raytracing/../light/light.h \
  /home/vevera/repos/RayCasting-C/canvas/../scene/../raytracing/../utils.h \
- /home/vevera/repos/RayCasting-C/canvas/../scene/../light/light.h \
  /home/vevera/repos/RayCasting-C/canvas/../camera/camera.h \
  /home/vevera/repos/RayCasting-C/scene/scene.h \
  /home/vevera/repos/RayCasting-C/light/light.h \

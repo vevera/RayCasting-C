@@ -18,7 +18,7 @@ typedef struct light {
 } Light;
 
 typedef struct lightArray {
-    Light** lights;
+    Light* lights;
     int size_;
     int max_size_;
 } LightArray;
@@ -28,8 +28,9 @@ void calc_light_diffuse_specular_contribution(vector* output, Color* color_, vec
                                                 vector* l, vector* n, 
                                                 vector* v, vector* r);
 LightArray* light_create_light_array(int max_size);
+void light_array_copy(LightArray *dest, LightArray* src);
 void light_free_light_array(LightArray* lights);
-void light_add_light_to_array(Light** light, LightArray* array);
+void light_add_light_to_array(Light* light, LightArray* array);
 
 //Implementation
 
@@ -74,22 +75,23 @@ void calc_light_diffuse_specular_contribution(  vector* output, Color* color_,
 
 LightArray* light_create_light_array(int max_size) {
     LightArray* array = (LightArray*)malloc(sizeof(LightArray));
-    array->lights = (Light**)malloc(max_size * sizeof(Light*));
+    array->lights = (Light*)malloc(max_size * sizeof(Light));
     array->size_ = 0;
     array->max_size_ = max_size;
 }
 
+void light_array_copy(LightArray *dest, LightArray* src) {
+    assert(dest->max_size_ == src->max_size_);
+    memcpy(dest->lights, src->lights, src->max_size_ * sizeof(Light));
+    dest->size_ = src->size_;
+}
+
 void light_free_light_array(LightArray* lights) {
-
-    for (int i = 0; i<lights->size_; i++){
-        light_delete_light(lights->lights[i]);
-    }
-
     free(lights->lights);
     free(lights);
 }
 
-void light_add_light_to_array(Light** light, LightArray* array) {
+void light_add_light_to_array(Light* light, LightArray* array) {
     if (array->size_ < array->max_size_) {
         array->lights[array->size_++] = *light;
     }
